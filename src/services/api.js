@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseUrl = '';
+const baseUrl = 'http://apigarangas.pubjaiz.com.br/public/api';
 
 const request = async (method, endpoint, params, token = null) => {
   method = method.toLowerCase();
@@ -43,6 +43,18 @@ export default {
   validateToken: async () => {
     let token = await AsyncStorage.getItem('token');
     let json = await request('post', '/auth/validate', {}, token);
+    return json;
+  },
+  getUrlLink: async () => {
+    let json = await request('get', '/link/movie', {});
+    return json;
+  },
+  getEvent: async () => {
+    let json = await request('get', '/event', {});
+    return json;
+  },
+  getProjects: async () => {
+    let json = await request('get', '/project', {});
     return json;
   },
 };
