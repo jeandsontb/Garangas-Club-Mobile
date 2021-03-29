@@ -1,6 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseUrl = 'http://apigarangas.pubjaiz.com.br/public/api';
+const baseUrl = '';
+
+export const UrlApi = () => {
+  return '';
+  //url para acesso as imagens pela api laravel
+};
 
 const request = async (method, endpoint, params, token = null) => {
   method = method.toLowerCase();
@@ -55,6 +60,14 @@ export default {
   },
   getProjects: async () => {
     let json = await request('get', '/project', {});
+    return json;
+  },
+  getProjectsId: async id => {
+    let json = await request('get', `/project/${id}`, {});
+    return json;
+  },
+  getHistoric: async () => {
+    let json = await request('get', '/historic', {});
     return json;
   },
 };

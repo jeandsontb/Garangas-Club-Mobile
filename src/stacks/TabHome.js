@@ -8,6 +8,8 @@ import Members from '../screens/Members';
 import Projects from '../screens/Projects';
 import Partners from '../screens/Partners';
 
+import ItensProject from '../screens/Projects/ItensProject';
+
 import TabCustom from '../components/TabCustom';
 
 const ButtonTab = createBottomTabNavigator();
@@ -23,6 +25,7 @@ export default () => {
       <ButtonTab.Screen name="Members" component={Members} />
       <ButtonTab.Screen name="Projects" component={Projects} />
       <ButtonTab.Screen name="Partners" component={Partners} />
+      <ButtonTab.Screen name="ItensProject" component={ItensProject} />
     </ButtonTab.Navigator>
   );
 };

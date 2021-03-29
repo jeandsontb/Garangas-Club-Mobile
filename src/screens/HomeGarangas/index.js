@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import Styled from './style';
 import {useStateValue} from '../../contexts/StateContext';
 import ModalMovie from '../../components/Modal/ModalMovie';
+import ModalEvent from '../../components/Modal/ModalEvent';
 import HeaderMovieFake from '../../components/Skeleton/HeaderMovieFake';
 import EventsFake from '../../components/Skeleton/EventsFake';
 import ProjectsFake from '../../components/Skeleton/ProjectsFake';
@@ -15,6 +16,7 @@ export default () => {
     const [context, dispatch] = useStateValue();
 
     const [showModalMovie, setShowModalMovie] = useState(false);
+    const [showModalEvent, setShowModalEvent] = useState(false);
 
     //*************************************************/
     const [loadingLink, setLoadingLink] = useState(false);
@@ -26,6 +28,7 @@ export default () => {
 
     const [loadingProject, setLoadingProject] = useState(false);
     const [dataProject, setDataProject] = useState({});
+    const [eventSelected, setEventSelected] = useState({});
 
     //############################################### PEGANDO OS RESULTADOS DA API ###############
 
@@ -85,8 +88,6 @@ export default () => {
         }
     };
 
-    console.log(dataProject);
-
     //########################################## PEGA A URL DO LINK E URL DO VÍDEO ###############
 
     const url = urlMovie;
@@ -100,11 +101,15 @@ export default () => {
 
     const youTubeID = getYouTubeId(url);
     const bgUrl = `https://img.youtube.com/vi/${youTubeID}/maxresdefault.jpg`;
-    const movieUrl = `https://www.youtube.com/embed/${youTubeID}`;
-
-    //############################################### INÍCIO DAS FUNÇÕES DA API ###################
+    const movieUrl = youTubeID;
+    // const movieUrl = `https://www.youtube.com/embed/${youTubeID}`;
 
     //########################################## INÍCIO DAS FUNÇÕES DA OPERACIONAIS ###############
+
+    const handleOpenEventSelected = data => {
+        setShowModalEvent(true);
+        setEventSelected(data);
+    };
 
     const handleOpenBoxMovie = () => {
         setShowModalMovie(true);
@@ -117,6 +122,13 @@ export default () => {
             <ModalMovie
                 onVisible={showModalMovie}
                 visibleAction={setShowModalMovie}
+                movie={movieUrl}
+            />
+
+            <ModalEvent
+                onEventVisible={showModalEvent}
+                visibleEventAction={setShowModalEvent}
+                dataEvent={eventSelected}
             />
 
             <Styled.ImageTop
@@ -135,15 +147,7 @@ export default () => {
             {/* ##################################################################### - BOX HEADER */}
 
             <Styled.BoxHeader>
-                {loadingLink && (
-                    <HeaderMovieFake />
-                    // <>
-                    //     <Styled.HeaderTextFake />
-                    //     <Styled.HeaderTextFake />
-
-                    //     <Styled.BoxHeaderImageFake />
-                    // </>
-                )}
+                {loadingLink && <HeaderMovieFake />}
 
                 {!loadingLink && bgUrl.length > 0 && (
                     <>
@@ -188,15 +192,14 @@ export default () => {
                     {!loadingEvent &&
                         dataEvent.length > 0 &&
                         dataEvent.map(data => (
-                            <Styled.BoxEventsDetail key={data.id}>
+                            <Styled.BoxEventsDetail
+                                key={data.id}
+                                onPress={() => handleOpenEventSelected(data)}>
                                 <Styled.EventImage source={{uri: data.img}} />
                                 <Styled.BoxRightEvents>
                                     <Styled.ContentTitle>
                                         {data.title}
                                     </Styled.ContentTitle>
-                                    <Styled.ContentDescription>
-                                        {data.description}
-                                    </Styled.ContentDescription>
                                     <Styled.ContentDate>
                                         {data.date}
                                     </Styled.ContentDate>
@@ -223,17 +226,26 @@ export default () => {
                             {!loadingProject &&
                                 dataProject.length > 0 &&
                                 dataProject.map(data => (
-                                    <Styled.BoxCoverProject key={data.id}>
-                                        <Styled.CoverProject
-                                            // eslint-disable-next-line react-native/no-inline-styles
-                                            style={{resizeMode: 'cover'}}
-                                            source={{uri: data.cover}}
-                                        />
-                                        <Styled.BoxNameProject>
-                                            <Styled.NameProject>
-                                                {data.name}
-                                            </Styled.NameProject>
-                                        </Styled.BoxNameProject>
+                                    <Styled.BoxCoverProject
+                                        key={data.id}
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                'ItensProject',
+                                                {data, id: data.id},
+                                            )
+                                        }>
+                                        <>
+                                            <Styled.CoverProject
+                                                // eslint-disable-next-line react-native/no-inline-styles
+                                                style={{resizeMode: 'cover'}}
+                                                source={{uri: data.cover}}
+                                            />
+                                            <Styled.BoxNameProject>
+                                                <Styled.NameProject>
+                                                    {data.name}
+                                                </Styled.NameProject>
+                                            </Styled.BoxNameProject>
+                                        </>
                                     </Styled.BoxCoverProject>
                                 ))}
                         </Styled.BoxScrollProjects>

@@ -1,6 +1,8 @@
 import React from 'react';
 import {Modal} from 'react-native';
 import styled from 'styled-components/native';
+import YouTubePlayer from 'react-native-youtube-sdk';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Box = styled.View`
     background-color: rgba(191, 135, 86, 0.8);
@@ -15,11 +17,19 @@ const BoxContent = styled.View`
     background-color: #fff;
 `;
 
-const BoxClose = styled.TouchableOpacity`
+const BoxClose = styled.View`
     background-color: rgba(191, 135, 86, 1);
     align-items: center;
-    padding: 15px;
+    padding: 10px;
     width: 100%;
+`;
+
+const ButtonClose = styled.TouchableHighlight`
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+    width: 50px;
+    height: 50px;
 `;
 
 const Text = styled.Text`
@@ -28,7 +38,11 @@ const Text = styled.Text`
     color: #fff;
 `;
 
-export default ({onVisible, visibleAction}) => {
+const Movie = styled.View`
+    width: 100%;
+`;
+
+export default ({onVisible, visibleAction, movie}) => {
     const handleModalClose = () => {
         visibleAction(false);
     };
@@ -42,10 +56,34 @@ export default ({onVisible, visibleAction}) => {
                 onRequestClose={() => visibleAction(false)}>
                 <Box>
                     <BoxContent>
-                        <BoxClose onPress={handleModalClose}>
-                            <Text>FECHAR VÍDEO</Text>
+                        <BoxClose>
+                            <ButtonClose
+                                onPress={handleModalClose}
+                                underlayColor="transparent">
+                                <Icon
+                                    name="times-circle"
+                                    size={35}
+                                    color="#FFF"
+                                />
+                            </ButtonClose>
                         </BoxClose>
-                        <Text>...</Text>
+                        <Movie>
+                            <YouTubePlayer
+                                ref={ref => (this.youTubePlayer = ref)}
+                                videoId={movie}
+                                autoPlay={true}
+                                fullscreen={false}
+                                showFullScreenButton={true}
+                                showSeekBar={false}
+                                showPlayPauseButton={true}
+                                startTime={5}
+                                // eslint-disable-next-line react-native/no-inline-styles
+                                style={{width: '100%', height: 200}}
+                                onError={e => console.log(e)}
+                                onChangeState={e => console.log(e)}
+                                onChangeFullscreen={e => console.log(e)}
+                            />
+                        </Movie>
                     </BoxContent>
                 </Box>
             </Modal>

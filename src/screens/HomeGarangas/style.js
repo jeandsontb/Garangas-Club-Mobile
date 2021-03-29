@@ -20,14 +20,6 @@ export default {
         align-items: center;
     `,
 
-    HeaderTextFake: styled.View`
-        background-color: rgba(191, 135, 86, 0.95);
-        width: 90%;
-        height: 15px;
-        border-radius: 5px;
-        margin-bottom: 4px;
-    `,
-
     HeaderText: styled.Text`
         font-family: Roboto-Medium;
         color: #fff;
@@ -46,17 +38,6 @@ export default {
     HeaderImageLogo: styled.Image`
         width: 120px;
         height: 110px;
-    `,
-
-    BoxHeaderImageFake: styled.View`
-        margin-top: 10px;
-        margin-bottom: -50px;
-        border: 2px;
-        width: 220px;
-        height: 120px;
-        border-color: #fff;
-        border-radius: 10px;
-        background-color: rgba(191, 135, 86, 0.95);
     `,
 
     BoxHeaderImage: styled.TouchableHighlight`
@@ -107,7 +88,7 @@ export default {
         margin-top: 10px;
     `,
 
-    BoxEventsDetail: styled.View`
+    BoxEventsDetail: styled.TouchableOpacity`
         flex-direction: row;
         background-color: #f5fffa;
         width: 100%;
@@ -134,12 +115,6 @@ export default {
         font-size: 18px;
     `,
 
-    ContentDescription: styled.Text`
-        color: #8c2f1b;
-        font-family: Roboto-Regular;
-        font-size: 14px;
-    `,
-
     ContentDate: styled.Text`
         color: #8c2f1b;
         font-family: Roboto-Medium;
@@ -155,7 +130,7 @@ export default {
 
     BoxScrollProjects: styled.ScrollView``,
 
-    BoxCoverProject: styled.View`
+    BoxCoverProject: styled.TouchableOpacity`
         margin-right: 10px;
         margin-top: 20px;
         width: 110px;

@@ -7,6 +7,7 @@ const TabArea = styled.View`
   flex-direction: row;
   background-color: #bf8756;
   height: 60px;
+  display: ${props => (props.visible === 6 ? 'none' : 'flex')};
 `;
 
 const ButtonHome = styled.TouchableHighlight`
@@ -59,11 +60,11 @@ const IconAnimate = Animatable.createAnimatableComponent(Icon);
 
 export default ({state, navigation}) => {
   const route = nameRoute => {
-    navigation.navigate(nameRoute);
+    navigation.navigate(nameRoute, {resetView: state.index});
   };
 
   return (
-    <TabArea>
+    <TabArea visible={state.index}>
       <ButtonHome
         onPress={() => route('HomeGarangas')}
         underlayColor="none"
