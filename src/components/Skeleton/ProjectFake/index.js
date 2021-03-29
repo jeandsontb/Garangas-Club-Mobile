@@ -100,13 +100,9 @@ export default () => {
 const styled = StyleSheet.create({
   boxContentProject: {
     flex: 1,
-    paddingTop: 10,
     paddingBottom: 20,
   },
-  scrollBoxProject: {
-    paddingLeft: 15,
-    paddingRight: 15,
-  },
+  scrollBoxProject: {},
   boxProject: {
     marginBottom: 10,
     width: '100%',

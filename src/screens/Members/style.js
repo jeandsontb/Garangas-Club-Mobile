@@ -19,19 +19,19 @@ export default {
         font-family: TrainOne-Regular;
     `,
 
-    BoxContentProjects: styled.View`
+    BoxContentMember: styled.View`
         flex: 1;
         padding-top: 10px;
         padding-bottom: 20px;
         background-color: #d7d7d9;
     `,
 
-    ScrollBoxProject: styled.ScrollView`
+    ScrollBoxMember: styled.ScrollView`
         padding-left: 15px;
         padding-right: 15px;
     `,
 
-    BoxProject: styled.TouchableOpacity`
+    BoxMember: styled.TouchableOpacity`
         margin-bottom: 10px;
         width: 100%;
         height: 130px;
@@ -39,7 +39,7 @@ export default {
         overflow: hidden;
     `,
 
-    ImageProject: styled.Image`
+    ImageMember: styled.Image`
         width: 100%;
         height: 100%;
     `,

@@ -9,6 +9,8 @@ import Projects from '../screens/Projects';
 import Partners from '../screens/Partners';
 
 import ItensProject from '../screens/Projects/ItensProject';
+import ItensMember from '../screens/Members/ItensMember';
+import ItensCarSale from '../screens/CarSale/ItensCarSale';
 
 import TabCustom from '../components/TabCustom';
 
@@ -26,6 +28,8 @@ export default () => {
       <ButtonTab.Screen name="Projects" component={Projects} />
       <ButtonTab.Screen name="Partners" component={Partners} />
       <ButtonTab.Screen name="ItensProject" component={ItensProject} />
+      <ButtonTab.Screen name="ItensMember" component={ItensMember} />
+      <ButtonTab.Screen name="ItensCarSale" component={ItensCarSale} />
     </ButtonTab.Navigator>
   );
 };

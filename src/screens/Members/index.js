@@ -11,18 +11,18 @@ export default () => {
     const route = useRoute();
     const focused = useIsFocused();
 
-    const [loadingProject, setLoadingProject] = useState(false);
-    const [dataProject, setDataProject] = useState({});
+    const [loadingMember, setLoadingMember] = useState(false);
+    const [dataMember, setDataMember] = useState({});
 
     useEffect(() => {
-        setDataProject({});
+        setDataMember({});
 
         BackHandler.addEventListener('hardwareBackPress', () => {
-            setDataProject({});
+            setDataMember({});
         });
 
         const CleanNavigator = navigation.addListener('focus', () => {
-            getDataProject();
+            getDataMember();
         });
 
         return CleanNavigator;
@@ -32,7 +32,7 @@ export default () => {
         let cancelPromise = true;
 
         if (cancelPromise) {
-            setDataProject({});
+            setDataMember({});
         }
 
         return () => (cancelPromise = false);
@@ -42,12 +42,12 @@ export default () => {
 
     //############ DATA PARA PEGAR O PROJETO #################
 
-    const getDataProject = async () => {
-        setLoadingProject(true);
-        const result = await api.getProjects();
-        setLoadingProject(false);
+    const getDataMember = async () => {
+        setLoadingMember(true);
+        const result = await api.getMembers();
+        setLoadingMember(false);
         if (result.error === '') {
-            setDataProject(result.data);
+            setDataMember(result.data);
         } else {
             // eslint-disable-next-line no-alert
             alert(result.error);
@@ -59,25 +59,25 @@ export default () => {
     return (
         <Styled.Container>
             <Styled.BoxIndicator>
-                <Styled.Text>PROJETOS</Styled.Text>
+                <Styled.Text>MEMBROS</Styled.Text>
             </Styled.BoxIndicator>
 
-            <Styled.BoxContentProjects>
-                <Styled.ScrollBoxProject>
-                    {loadingProject && <ProjectFake />}
+            <Styled.BoxContentMember>
+                <Styled.ScrollBoxMember>
+                    {loadingMember && <ProjectFake />}
 
-                    {!loadingProject &&
-                        dataProject.length > 0 &&
-                        dataProject.map((data, index) => (
-                            <Styled.BoxProject
+                    {!loadingMember &&
+                        dataMember.length > 0 &&
+                        dataMember.map((data, index) => (
+                            <Styled.BoxMember
                                 key={index}
                                 onPress={() =>
-                                    navigation.navigate('ItensProject', {
+                                    navigation.navigate('ItensMember', {
                                         data,
                                         id: data.id,
                                     })
                                 }>
-                                <Styled.ImageProject
+                                <Styled.ImageMember
                                     source={{uri: data.cover}}
                                 />
                                 <Styled.BoxTitle>
@@ -85,10 +85,10 @@ export default () => {
                                         {data.name}
                                     </Styled.TextTitle>
                                 </Styled.BoxTitle>
-                            </Styled.BoxProject>
+                            </Styled.BoxMember>
                         ))}
-                </Styled.ScrollBoxProject>
-            </Styled.BoxContentProjects>
+                </Styled.ScrollBoxMember>
+            </Styled.BoxContentMember>
         </Styled.Container>
     );
 };

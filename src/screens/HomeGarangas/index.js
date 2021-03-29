@@ -131,6 +131,10 @@ export default () => {
                 dataEvent={eventSelected}
             />
 
+            <Styled.ButtonDrawer>
+                <Styled.Text>Abrir</Styled.Text>
+            </Styled.ButtonDrawer>
+
             <Styled.ImageTop
                 source={require('../../assets/fusca.png')}
                 // eslint-disable-next-line react-native/no-inline-styles

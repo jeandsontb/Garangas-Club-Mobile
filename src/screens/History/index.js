@@ -54,7 +54,7 @@ export default () => {
     return (
         <Styled.Container>
             <Styled.BoxIndicator>
-                <Styled.TextIndicator>História</Styled.TextIndicator>
+                <Styled.TextIndicator>HISTÓRIA</Styled.TextIndicator>
             </Styled.BoxIndicator>
 
             <Styled.BoxContent>

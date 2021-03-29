@@ -4,6 +4,19 @@ export default {
     Container: styled.View`
         flex: 1;
     `,
+
+    ButtonDrawer: styled.View`
+        position: absolute;
+        z-index: 99;
+        margin-left: 15px;
+        margin-top: 15px;
+        width: 50px;
+        height: 50px;
+        background-color: #ff0000;
+    `,
+
+    Text: styled.Text``,
+
     ImageTop: styled.Image`
         width: 100%;
         height: 380px;

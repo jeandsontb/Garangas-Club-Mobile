@@ -7,7 +7,7 @@ const TabArea = styled.View`
   flex-direction: row;
   background-color: #bf8756;
   height: 60px;
-  display: ${props => (props.visible === 6 ? 'none' : 'flex')};
+  display: ${props => (props.visible > 5 ? 'none' : 'flex')};
 `;
 
 const ButtonHome = styled.TouchableHighlight`

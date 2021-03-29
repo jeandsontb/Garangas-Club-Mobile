@@ -70,4 +70,20 @@ export default {
     let json = await request('get', '/historic', {});
     return json;
   },
+  getMembers: async () => {
+    let json = await request('get', '/member', {});
+    return json;
+  },
+  getMemberId: async id => {
+    let json = await request('get', `/member/${id}`, {});
+    return json;
+  },
+  getCarSale: async () => {
+    let json = await request('get', '/car/sale', {});
+    return json;
+  },
+  getCarSaleId: async id => {
+    let json = await request('get', `/car/sale/${id}`, {});
+    return json;
+  },
 };
