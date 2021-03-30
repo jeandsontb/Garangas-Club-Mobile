@@ -5,17 +5,21 @@ export default {
         flex: 1;
     `,
 
-    ButtonDrawer: styled.View`
+    BoxButtonDrawer: styled.View`
         position: absolute;
         z-index: 99;
         margin-left: 15px;
         margin-top: 15px;
         width: 50px;
         height: 50px;
-        background-color: #ff0000;
     `,
 
-    Text: styled.Text``,
+    ButtonDrawer: styled.TouchableOpacity``,
+
+    IconButtonOpenDraw: styled.Image`
+        width: 100%;
+        height: 100%;
+    `,
 
     ImageTop: styled.Image`
         width: 100%;
@@ -69,11 +73,16 @@ export default {
         height: 100%;
         border-radius: 10px;
     `,
-    HeaderImagePlay: styled.Image`
-        width: 30px;
-        height: 30px;
-        margin-top: -80px;
+
+    BoxHeaderImagePlay: styled.View`
+        width: 32px;
+        height: 32px;
+        margin-top: -76px;
         margin-left: 95px;
+        background-color: #ff0000;
+        border-radius: 16px;
+        justify-content: center;
+        align-items: center;
     `,
 
     BoxContent: styled.View`

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StatusBar} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Styled from './style';
 import {useStateValue} from '../../contexts/StateContext';
@@ -131,9 +132,16 @@ export default () => {
                 dataEvent={eventSelected}
             />
 
-            <Styled.ButtonDrawer>
-                <Styled.Text>Abrir</Styled.Text>
-            </Styled.ButtonDrawer>
+            <Styled.BoxButtonDrawer>
+                <Styled.ButtonDrawer
+                    onPress={() =>
+                        navigation.dispatch(DrawerActions.openDrawer())
+                    }>
+                    <Styled.IconButtonOpenDraw
+                        source={require('../../assets/iconDraw.png')}
+                    />
+                </Styled.ButtonDrawer>
+            </Styled.BoxButtonDrawer>
 
             <Styled.ImageTop
                 source={require('../../assets/fusca.png')}
@@ -170,9 +178,13 @@ export default () => {
                                         }}
                                     />
                                 </Styled.HeaderBorderImage>
-                                <Styled.HeaderImagePlay
-                                    source={require('../../assets/play.png')}
-                                />
+                                <Styled.BoxHeaderImagePlay>
+                                    <Icon
+                                        name="play-circle"
+                                        size={30}
+                                        color="#FFF"
+                                    />
+                                </Styled.BoxHeaderImagePlay>
                             </>
                         </Styled.BoxHeaderImage>
                     </>
