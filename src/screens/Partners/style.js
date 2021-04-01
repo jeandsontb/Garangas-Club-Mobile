@@ -6,16 +6,34 @@ export default {
     `,
 
     BoxIndicator: styled.View`
+        flex-direction: row;
         width: 100%;
         height: 60px;
         background-color: #bf8756;
+        align-items: center;
+    `,
+
+    BoxDrawer: styled.TouchableOpacity`
+        width: 60px;
+        height: 60px;
         justify-content: center;
         align-items: center;
     `,
 
-    TextIndicator: styled.Text`
+    ImgDrawer: styled.Image`
+        width: 30px;
+        height: 30px;
+    `,
+
+    BoxTextInformation: styled.View`
+        flex: 1;
+        align-items: center;
+        margin-left: -60px;
+    `,
+
+    TextInformation: styled.Text`
         color: #fff;
-        font-size: 24px;
+        font-size: 20px;
         font-family: TrainOne-Regular;
     `,
 

@@ -1,6 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {BackHandler} from 'react-native';
-import {useNavigation, useRoute, useIsFocused} from '@react-navigation/native';
+import {
+    useNavigation,
+    useRoute,
+    useIsFocused,
+    DrawerActions,
+} from '@react-navigation/native';
 
 import Styled from './style';
 import api from '../../services/api';
@@ -59,7 +64,19 @@ export default () => {
     return (
         <Styled.Container>
             <Styled.BoxIndicator>
-                <Styled.Text>CARROS À VENDA</Styled.Text>
+                <Styled.BoxDrawer
+                    onPress={() =>
+                        navigation.dispatch(DrawerActions.openDrawer())
+                    }>
+                    <Styled.ImgDrawer
+                        source={require('../../assets/iconDraw.png')}
+                    />
+                </Styled.BoxDrawer>
+                <Styled.BoxTextInformation>
+                    <Styled.TextInformation>
+                        CARROS À VENDA
+                    </Styled.TextInformation>
+                </Styled.BoxTextInformation>
             </Styled.BoxIndicator>
 
             <Styled.BoxContentCarSale>

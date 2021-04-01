@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {useStateValue} from '../../contexts/StateContext';
+import api from '../../services/api';
 
 const DrawerArea = styled.View`
   flex: 1;
@@ -72,11 +72,12 @@ const BoxLogin = styled.TouchableOpacity`
   padding-left: 15px;
 `;
 
-const Text = styled.Text``;
-
 export default props => {
   const navigation = useNavigation();
-  const [context, dispatch] = useStateValue();
+
+  let verifyLogin = api.getToken();
+
+  const [showButtonsMember, setShowButtonsMember] = useState(false);
 
   const menus = [
     {title: 'Vendas', icon: 'car', screen: 'CarSale'},
@@ -85,6 +86,35 @@ export default props => {
     {title: 'Projetos', icon: 'gavel', screen: 'Projects'},
     {title: 'Parceiros', icon: 'male', screen: 'Partners'},
   ];
+
+  useEffect(() => {
+    let cancelEvent = true;
+
+    if (cancelEvent) {
+      const checkLogin = async () => {
+        let token = await api.getToken();
+
+        if (token) {
+          let result = await api.validateToken();
+          if (result.error === '') {
+            setShowButtonsMember(true);
+          } else {
+            setShowButtonsMember(false);
+          }
+        } else {
+          setShowButtonsMember(false);
+        }
+      };
+      checkLogin();
+    }
+
+    return () => (cancelEvent = false);
+  }, [verifyLogin]);
+
+  const handleLogoutApplication = async () => {
+    await api.logout();
+    setShowButtonsMember(false);
+  };
 
   return (
     <DrawerArea>
@@ -109,40 +139,46 @@ export default props => {
 
           <Separator />
 
-          <BoxLogin onPress={() => navigation.navigate('Login')}>
-            <BoxIcon>
-              <Icon name="user" size={20} color="#BF8756" />
-            </BoxIcon>
-            <TextMenu>Login</TextMenu>
-          </BoxLogin>
+          {!showButtonsMember && (
+            <BoxLogin onPress={() => navigation.navigate('Login')}>
+              <BoxIcon>
+                <Icon name="user" size={20} color="#BF8756" />
+              </BoxIcon>
+              <TextMenu>Login</TextMenu>
+            </BoxLogin>
+          )}
 
-          <BoxLogin>
-            <BoxIcon>
-              <Icon name="edit" size={20} color="#BF8756" />
-            </BoxIcon>
-            <TextMenu>Meus Projetos</TextMenu>
-          </BoxLogin>
+          {showButtonsMember && (
+            <>
+              <BoxLogin onPress={() => navigation.navigate('MyProjects')}>
+                <BoxIcon>
+                  <Icon name="edit" size={20} color="#BF8756" />
+                </BoxIcon>
+                <TextMenu>Meus Projetos</TextMenu>
+              </BoxLogin>
 
-          <BoxLogin>
-            <BoxIcon>
-              <Icon name="thumbs-up" size={20} color="#BF8756" />
-            </BoxIcon>
-            <TextMenu>Meus anúncios</TextMenu>
-          </BoxLogin>
+              <BoxLogin>
+                <BoxIcon>
+                  <Icon name="thumbs-up" size={20} color="#BF8756" />
+                </BoxIcon>
+                <TextMenu>Meus anúncios</TextMenu>
+              </BoxLogin>
 
-          <BoxLogin>
-            <BoxIcon>
-              <Icon name="user" size={20} color="#BF8756" />
-            </BoxIcon>
-            <TextMenu>Meu perfil</TextMenu>
-          </BoxLogin>
+              <BoxLogin>
+                <BoxIcon>
+                  <Icon name="user" size={20} color="#BF8756" />
+                </BoxIcon>
+                <TextMenu>Meu perfil</TextMenu>
+              </BoxLogin>
 
-          <BoxLogin>
-            <BoxIcon>
-              <Icon name="arrow-left" size={20} color="#BF8756" />
-            </BoxIcon>
-            <TextMenu>Sair</TextMenu>
-          </BoxLogin>
+              <BoxLogin onPress={handleLogoutApplication}>
+                <BoxIcon>
+                  <Icon name="arrow-left" size={20} color="#BF8756" />
+                </BoxIcon>
+                <TextMenu>Sair</TextMenu>
+              </BoxLogin>
+            </>
+          )}
         </ScrollButtons>
       </BoxButtons>
     </DrawerArea>

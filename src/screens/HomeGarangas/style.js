@@ -10,8 +10,8 @@ export default {
         z-index: 99;
         margin-left: 15px;
         margin-top: 15px;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
     `,
 
     ButtonDrawer: styled.TouchableOpacity``,

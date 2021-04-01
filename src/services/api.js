@@ -50,6 +50,16 @@ export default {
     let json = await request('post', '/auth/validate', {}, token);
     return json;
   },
+  login: async (email, password) => {
+    let json = await request('post', '/auth/login', {email, password});
+    return json;
+  },
+  logout: async () => {
+    let token = await AsyncStorage.getItem('token');
+    let json = await request('post', '/auth/logout', {}, token);
+    await AsyncStorage.removeItem('token');
+    return json;
+  },
   getUrlLink: async () => {
     let json = await request('get', '/link/movie', {});
     return json;
@@ -84,6 +94,71 @@ export default {
   },
   getCarSaleId: async id => {
     let json = await request('get', `/car/sale/${id}`, {});
+    return json;
+  },
+  //####################################### -- SERVICES PARA OS FORMS -- ################
+  addPhotoProject: async file => {
+    let token = await AsyncStorage.getItem('token');
+    let formData = new FormData();
+
+    formData.append('photo', {
+      uri: file.uri,
+      type: file.type,
+      name: file.fileName,
+    });
+
+    let req = await fetch(`${baseUrl}/project/file/restrict`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    let json = await req.json();
+    return json;
+  },
+  addProject: async (
+    cover,
+    photos,
+    name,
+    title,
+    description,
+    futureprojects,
+  ) => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request(
+      'post',
+      '/project/restrict',
+      {
+        name,
+        title,
+        description,
+        futureprojects,
+        cover,
+        photos,
+      },
+      token,
+    );
+    return json;
+  },
+  getProjectsMember: async id => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request(
+      'get',
+      `/project/member/restrict/${id}`,
+      {},
+      token,
+    );
+    return json;
+  },
+  removeProject: async id => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request('delete', `/project/restrict/${id}`, {}, token);
     return json;
   },
 };

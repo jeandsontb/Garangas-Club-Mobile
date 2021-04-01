@@ -8,36 +8,90 @@ export default {
         background-color: #d7d7d9;
     `,
 
-    BoxLogo: styled.View`
-        width: 150px;
+    BoxImageContainer: styled.View`
+        align-items: center;
         height: 140px;
+        width: 100%;
         margin-bottom: 60px;
     `,
 
-    Logo: styled.Image`
+    BoxFormContainer: styled.View`
         width: 100%;
-        height: 100%;
     `,
 
-    BoxForm: styled.View`
+    BoxInput: styled.View`
+        flex-direction: row;
+        margin-left: 10%;
         width: 80%;
+        height: 50px;
+        margin-bottom: 10px;
+    `,
+
+    Logo: styled.Image`
+        width: 150px;
+        height: 140px;
+    `,
+
+    BoxFormInput: styled.View`
+        justify-content: flex-start;
+        align-items: flex-start;
+        background-color: #000;
+        height: 115px;
+        width: 100%;
+        padding-left: 10%;
+        padding-right: 10%;
+    `,
+
+    IconInput: styled.View`
+        width: 30px;
+        height: 50px;
+        justify-content: center;
+        align-items: center;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        background-color: #f5fffa;
+    `,
+
+    IconInputShowPasswordButton: styled.TouchableOpacity`
+        width: 30px;
+        height: 50px;
+        justify-content: center;
+        align-items: center;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background-color: #f5fffa;
     `,
 
     InputLogin: styled.TextInput`
-        width: 100%;
+        flex: 1;
         height: 50px;
-        border-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
         background-color: #f5fffa;
         margin-bottom: 15px;
         padding-left: 5px;
         padding-right: 5px;
         font-family: Roboto-Regular;
         font-size: 16px;
+        color: #8c2f1b;
+    `,
+
+    InputPassword: styled.TextInput`
+        flex: 1;
+        height: 50px;
+        background-color: #f5fffa;
+        margin-bottom: 15px;
+        padding-left: 5px;
+        padding-right: 5px;
+        font-family: Roboto-Regular;
+        font-size: 16px;
+        color: #8c2f1b;
     `,
 
     ButtonSend: styled.TouchableOpacity`
         flex-direction: row;
-        width: 100%;
+        margin-left: 10%;
+        width: 80%;
         height: 50px;
         background-color: #bf8756;
         align-items: center;
@@ -53,7 +107,8 @@ export default {
     `,
 
     BoxInformation: styled.View`
-        width: 100%;
+        width: 80%;
+        margin-left: 10%;
         margin-top: 25px;
     `,
 
