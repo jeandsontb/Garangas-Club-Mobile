@@ -1,12 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseUrl = '';
-
-export const UrlApi = () => {
-  return '';
-  //url para acesso as imagens pela api laravel
-};
-
 const request = async (method, endpoint, params, token = null) => {
   method = method.toLowerCase();
   let fullUrl = `${baseUrl}${endpoint}`;
@@ -132,6 +125,32 @@ export default {
     let json = await request(
       'post',
       '/project/restrict',
+      {
+        name,
+        title,
+        description,
+        futureprojects,
+        cover,
+        photos,
+      },
+      token,
+    );
+    return json;
+  },
+  editProject: async (
+    id,
+    cover,
+    photos,
+    name,
+    title,
+    description,
+    futureprojects,
+  ) => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request(
+      'post',
+      `/project/restrict/${id}`,
       {
         name,
         title,

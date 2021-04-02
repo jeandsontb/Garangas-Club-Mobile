@@ -7,6 +7,7 @@ import Login from '../screens/Login';
 
 import MyProjects from '../screens/MyProjects';
 import Add from '../screens/MyProjects/actions/Add';
+import Edit from '../screens/MyProjects/actions/Edit';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,6 +18,7 @@ export default () => {
       <Drawer.Screen name="Login" component={Login} />
       <Drawer.Screen name="MyProjects" component={MyProjects} />
       <Drawer.Screen name="Add" component={Add} />
+      <Drawer.Screen name="Edit" component={Edit} />
     </Drawer.Navigator>
   );
 };
