@@ -180,4 +180,136 @@ export default {
     let json = await request('delete', `/project/restrict/${id}`, {}, token);
     return json;
   },
+  getCarSaleMember: async id => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request(
+      'get',
+      `/car/sale/member/restrict/${id}`,
+      {},
+      token,
+    );
+    return json;
+  },
+  addPhotoCarSale: async file => {
+    let token = await AsyncStorage.getItem('token');
+    let formData = new FormData();
+
+    formData.append('photo', {
+      uri: file.uri,
+      type: file.type,
+      name: file.fileName,
+    });
+
+    let req = await fetch(`${baseUrl}/car/sale/file/restrict`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    let json = await req.json();
+    return json;
+  },
+  addCarSale: async (cover, photos, name, title, description, phone, price) => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request(
+      'post',
+      '/car/sale/member/restrict',
+      {
+        name,
+        title,
+        description,
+        phone,
+        price,
+        cover,
+        photos,
+      },
+      token,
+    );
+    return json;
+  },
+  editCarSale: async (
+    id,
+    cover,
+    photos,
+    name,
+    title,
+    description,
+    phone,
+    price,
+  ) => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request(
+      'post',
+      `/car/sale/member/restrict/${id}`,
+      {
+        name,
+        title,
+        description,
+        phone,
+        price,
+        cover,
+        photos,
+      },
+      token,
+    );
+    return json;
+  },
+  removeCarSale: async id => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request('delete', `/car/sale/restrict/${id}`, {}, token);
+    return json;
+  },
+  getUserMember: async id => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request('get', `/member/user/restrict/${id}`, {}, token);
+    return json;
+  },
+  addMember: async (cover, photos, name, title, description) => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request(
+      'post',
+      '/member/restrict',
+      {
+        name,
+        title,
+        description,
+        cover,
+        photos,
+      },
+      token,
+    );
+    return json;
+  },
+  editMember: async (id, cover, photos, name, title, description) => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request(
+      'post',
+      `/member/restrict/${id}`,
+      {
+        name,
+        title,
+        description,
+        cover,
+        photos,
+      },
+      token,
+    );
+    return json;
+  },
+  removeMember: async id => {
+    let token = await AsyncStorage.getItem('token');
+
+    let json = await request('delete', `/member/restrict/${id}`, {}, token);
+    return json;
+  },
 };

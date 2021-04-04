@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Platform, Alert, BackHandler} from 'react-native';
+import React, {useState} from 'react';
+import {Platform, Alert} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -7,12 +7,11 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Styled from './style';
 import ImagesFake from '../../../../components/Skeleton/ImagesFake';
 import GalleryFake from '../../../../components/Skeleton/GalleryFake';
-import api, {URLImageThumb} from '../../../../services/api';
+import api from '../../../../services/api';
 
 export default () => {
     const navigation = useNavigation();
     const route = useRoute();
-    const urlImageThumb = URLImageThumb.URLImage;
 
     const [loadingCover, setLoadingCover] = useState(false);
     const [dataCoverTemp, setDataCoverTemp] = useState({});
@@ -25,43 +24,8 @@ export default () => {
     const [name, setName] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [futureProjects, setFutureProjects] = useState('');
 
     const [loadingButton, setLoadingButton] = useState(false);
-
-    useEffect(() => {
-        let cancelEffect = true;
-
-        if (cancelEffect) {
-            BackHandler.addEventListener('hardwareBackPress', () => {
-                setDataCover('');
-                setGalleryList([]);
-                setName('');
-                setTitle('');
-                setDescription('');
-                setFutureProjects('');
-            });
-
-            setDataCover(route.params.data.cover);
-            setName(route.params.data.name);
-            setTitle(route.params.data.title);
-            setDescription(route.params.data.description);
-            setFutureProjects(route.params.data.futureprojects);
-            populateThumbImagesProject();
-        }
-
-        return () => (cancelEffect = false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigation, route]);
-
-    //função para preencher a url certa para as imagens
-    const populateThumbImagesProject = () => {
-        let list = [...galleryList];
-        for (let i = 0; i < route.params.data.photos.length; i++) {
-            list.push(`${urlImageThumb}${route.params.data.photos[i]}`);
-        }
-        setGalleryList(list);
-    };
 
     //################################# -- ADICIONAR A FOTO DA CAPA -- #######################
 
@@ -147,7 +111,7 @@ export default () => {
 
     //################################# -- ADICIONANDO O PROJETO NO BANCO -- #######################
 
-    const handleSubmitEditFormProject = async () => {
+    const handleSubmitFormMember = async () => {
         if (
             dataCover !== '' &&
             name !== '' &&
@@ -155,16 +119,16 @@ export default () => {
             description !== ''
         ) {
             setLoadingButton(true);
-            const result = await api.editProject(
-                route.params.data.id,
+
+            const result = await api.addMember(
                 dataCover,
                 galleryList,
                 name,
                 title,
                 description,
-                futureProjects,
             );
             setLoadingButton(false);
+
             if (result.error === '') {
                 setDataCover('');
                 setDataCoverTemp({});
@@ -173,7 +137,7 @@ export default () => {
                 setName('');
                 setTitle('');
                 setDescription('');
-                setFutureProjects('');
+
                 navigation.goBack();
             } else {
                 Alert.alert(
@@ -197,18 +161,6 @@ export default () => {
 
     const handleBackView = () => {
         navigation.goBack();
-        setDataCover('');
-        setGalleryList([]);
-        setName('');
-        setTitle('');
-        setDescription('');
-        setFutureProjects('');
-    };
-
-    const handlePhotoSelectedRemove = url => {
-        let list = [...galleryList];
-        list = list.filter(urls => urls !== url);
-        setGalleryList(list);
     };
 
     return (
@@ -221,12 +173,12 @@ export default () => {
                 </Styled.BoxDrawer>
                 <Styled.BoxTextInformation>
                     <Styled.TextInformation>
-                        EDITE O PROJETO
+                        ADICIONE SEU PERFIL
                     </Styled.TextInformation>
                 </Styled.BoxTextInformation>
             </Styled.BoxIndicator>
 
-            <Styled.ScrollFormProject>
+            <Styled.ScrollFormMember>
                 <Styled.BoxPhotoCover>
                     <Styled.ButtonImg
                         onPress={() =>
@@ -278,23 +230,12 @@ export default () => {
 
                     <Styled.BoxScrollImages>
                         <Styled.ScrollImages horizontal={true}>
-                            {galleryList.length > 0 &&
-                                galleryList.map((url, index) => (
-                                    <Styled.GalleryThumbImagesEdit key={index}>
-                                        <Styled.Gallery source={{uri: url}} />
-
-                                        <Styled.ButtonRemovePhotoGallery
-                                            onPress={() =>
-                                                handlePhotoSelectedRemove(url)
-                                            }>
-                                            <Icon
-                                                name="minus"
-                                                size={20}
-                                                color="#FFF"
-                                            />
-                                        </Styled.ButtonRemovePhotoGallery>
-                                    </Styled.GalleryThumbImagesEdit>
-                                ))}
+                            {galleryList.map((url, index) => (
+                                <Styled.Gallery
+                                    key={index}
+                                    source={{uri: url}}
+                                />
+                            ))}
 
                             {galleryloading && dataGalleryTemp?.uri && (
                                 <>
@@ -311,7 +252,7 @@ export default () => {
 
                 <Styled.BoxForm>
                     <Styled.BoxInput>
-                        <Styled.LabelInput>Proprietário</Styled.LabelInput>
+                        <Styled.LabelInput>Nome</Styled.LabelInput>
                         <Styled.InputText
                             value={name}
                             onChangeText={e => setName(e)}
@@ -321,18 +262,18 @@ export default () => {
                     </Styled.BoxInput>
 
                     <Styled.BoxInput>
-                        <Styled.LabelInput>Projeto</Styled.LabelInput>
+                        <Styled.LabelInput>Título</Styled.LabelInput>
                         <Styled.InputText
                             value={title}
                             onChangeText={e => setTitle(e)}
-                            placeholder="Digite um nome para o projeto"
+                            placeholder="Digite titulo ou apelido "
                             placeholderTextColor="rgba(191, 135, 86, 0.50)"
                         />
                     </Styled.BoxInput>
 
                     <Styled.BoxInput>
                         <Styled.LabelInput>
-                            Descrição do Projeto
+                            Descrição / Paixão pelos antigos
                         </Styled.LabelInput>
                         <Styled.InputText
                             description
@@ -340,30 +281,20 @@ export default () => {
                             onChangeText={e => setDescription(e)}
                             multiline={true}
                             numberOfLines={5}
-                            placeholder="Digite os detalhes do projeto"
-                            placeholderTextColor="rgba(191, 135, 86, 0.50)"
-                        />
-                    </Styled.BoxInput>
-
-                    <Styled.BoxInput>
-                        <Styled.LabelInput>Upgrades Futuros</Styled.LabelInput>
-                        <Styled.InputText
-                            value={futureProjects}
-                            onChangeText={e => setFutureProjects(e)}
-                            placeholder="Digite os futuros ítens para esse projeto"
+                            placeholder="Digite os detalhes para ser Garangas"
                             placeholderTextColor="rgba(191, 135, 86, 0.50)"
                         />
                     </Styled.BoxInput>
                 </Styled.BoxForm>
 
-                <Styled.ButtonProjectSend onPress={handleSubmitEditFormProject}>
+                <Styled.ButtonMemberSend onPress={handleSubmitFormMember}>
                     <Styled.TextButton>
                         {loadingButton
-                            ? 'ALTERANDO PROJETO ...'
-                            : 'ALTERAR PROJETO'}
+                            ? 'SALVANDO PERFIL ...'
+                            : 'SALVAR PERFIL'}
                     </Styled.TextButton>
-                </Styled.ButtonProjectSend>
-            </Styled.ScrollFormProject>
+                </Styled.ButtonMemberSend>
+            </Styled.ScrollFormMember>
         </Styled.Container>
     );
 };

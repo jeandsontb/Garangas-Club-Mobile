@@ -157,14 +157,14 @@ export default props => {
                 <TextMenu>Meus Projetos</TextMenu>
               </BoxLogin>
 
-              <BoxLogin>
+              <BoxLogin onPress={() => navigation.navigate('MyCarSale')}>
                 <BoxIcon>
                   <Icon name="thumbs-up" size={20} color="#BF8756" />
                 </BoxIcon>
                 <TextMenu>Meus anúncios</TextMenu>
               </BoxLogin>
 
-              <BoxLogin>
+              <BoxLogin onPress={() => navigation.navigate('MyMembers')}>
                 <BoxIcon>
                   <Icon name="user" size={20} color="#BF8756" />
                 </BoxIcon>

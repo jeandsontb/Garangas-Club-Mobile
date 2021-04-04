@@ -25,7 +25,8 @@ export default () => {
     const [name, setName] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [futureProjects, setFutureProjects] = useState('');
+    const [phone, setPhone] = useState('');
+    const [price, setPrice] = useState('');
 
     const [loadingButton, setLoadingButton] = useState(false);
 
@@ -39,14 +40,16 @@ export default () => {
                 setName('');
                 setTitle('');
                 setDescription('');
-                setFutureProjects('');
+                setPhone('');
+                setPrice('');
             });
 
             setDataCover(route.params.data.cover);
             setName(route.params.data.name);
             setTitle(route.params.data.title);
             setDescription(route.params.data.description);
-            setFutureProjects(route.params.data.futureprojects);
+            setPhone(route.params.data.phone);
+            setPrice(route.params.data.price);
             populateThumbImagesProject();
         }
 
@@ -87,7 +90,7 @@ export default () => {
             setDataCoverTemp(data);
             setLoadingCover(true);
 
-            let result = await api.addPhotoProject(data);
+            let result = await api.addPhotoCarSale(data);
             if (result.error === '') {
                 setDataCoverTemp({});
                 setLoadingCover(false);
@@ -127,7 +130,7 @@ export default () => {
             setDataGalleryTemp(data);
             setGalleryLoading(true);
 
-            let result = await api.addPhotoProject(data);
+            let result = await api.addPhotoCarSale(data);
             if (result.error === '') {
                 let list = [...galleryList];
                 list.push(result.photo);
@@ -145,9 +148,9 @@ export default () => {
         }
     };
 
-    //################################# -- ADICIONANDO O PROJETO NO BANCO -- #######################
+    //################################# -- ADICIONANDO O VEÍCULO NO BANCO -- #######################
 
-    const handleSubmitEditFormProject = async () => {
+    const handleSubmitEditFormCarSale = async () => {
         if (
             dataCover !== '' &&
             name !== '' &&
@@ -155,14 +158,15 @@ export default () => {
             description !== ''
         ) {
             setLoadingButton(true);
-            const result = await api.editProject(
+            const result = await api.editCarSale(
                 route.params.data.id,
                 dataCover,
                 galleryList,
                 name,
                 title,
                 description,
-                futureProjects,
+                phone,
+                price,
             );
             setLoadingButton(false);
             if (result.error === '') {
@@ -173,12 +177,13 @@ export default () => {
                 setName('');
                 setTitle('');
                 setDescription('');
-                setFutureProjects('');
+                setPhone('');
+                setPrice('');
                 navigation.goBack();
             } else {
                 Alert.alert(
                     'Opss!',
-                    'Erro ao enviar projeto, tente novamente mais tarde.',
+                    'Erro ao enviar o veículo, tente novamente mais tarde.',
                     // eslint-disable-next-line no-sparse-arrays
                     [{text: 'OK', onPress: () => console.log('OK Pressed')}, ,],
                 );
@@ -202,7 +207,8 @@ export default () => {
         setName('');
         setTitle('');
         setDescription('');
-        setFutureProjects('');
+        setPhone('');
+        setPrice('');
     };
 
     const handlePhotoSelectedRemove = url => {
@@ -221,12 +227,12 @@ export default () => {
                 </Styled.BoxDrawer>
                 <Styled.BoxTextInformation>
                     <Styled.TextInformation>
-                        EDITE O PROJETO
+                        EDITE O VEÍCULO
                     </Styled.TextInformation>
                 </Styled.BoxTextInformation>
             </Styled.BoxIndicator>
 
-            <Styled.ScrollFormProject>
+            <Styled.ScrollFormCarSale>
                 <Styled.BoxPhotoCover>
                     <Styled.ButtonImg
                         onPress={() =>
@@ -321,18 +327,18 @@ export default () => {
                     </Styled.BoxInput>
 
                     <Styled.BoxInput>
-                        <Styled.LabelInput>Projeto</Styled.LabelInput>
+                        <Styled.LabelInput>Veículo</Styled.LabelInput>
                         <Styled.InputText
                             value={title}
                             onChangeText={e => setTitle(e)}
-                            placeholder="Digite um nome para o projeto"
+                            placeholder="Digite o nome do veículo"
                             placeholderTextColor="rgba(191, 135, 86, 0.50)"
                         />
                     </Styled.BoxInput>
 
                     <Styled.BoxInput>
                         <Styled.LabelInput>
-                            Descrição do Projeto
+                            Detalhes do veículo
                         </Styled.LabelInput>
                         <Styled.InputText
                             description
@@ -340,30 +346,40 @@ export default () => {
                             onChangeText={e => setDescription(e)}
                             multiline={true}
                             numberOfLines={5}
-                            placeholder="Digite os detalhes do projeto"
+                            placeholder="Digite os detalhes do veículo"
                             placeholderTextColor="rgba(191, 135, 86, 0.50)"
                         />
                     </Styled.BoxInput>
 
                     <Styled.BoxInput>
-                        <Styled.LabelInput>Upgrades Futuros</Styled.LabelInput>
+                        <Styled.LabelInput>Telefone</Styled.LabelInput>
                         <Styled.InputText
-                            value={futureProjects}
-                            onChangeText={e => setFutureProjects(e)}
-                            placeholder="Digite os futuros ítens para esse projeto"
+                            value={phone}
+                            onChangeText={e => setPhone(e)}
+                            placeholder="Digite um telefone para contato"
+                            placeholderTextColor="rgba(191, 135, 86, 0.50)"
+                        />
+                    </Styled.BoxInput>
+
+                    <Styled.BoxInput>
+                        <Styled.LabelInput>Valor</Styled.LabelInput>
+                        <Styled.InputText
+                            value={price}
+                            onChangeText={e => setPrice(e)}
+                            placeholder="Digite o valor "
                             placeholderTextColor="rgba(191, 135, 86, 0.50)"
                         />
                     </Styled.BoxInput>
                 </Styled.BoxForm>
 
-                <Styled.ButtonProjectSend onPress={handleSubmitEditFormProject}>
+                <Styled.ButtonCarSaleSend onPress={handleSubmitEditFormCarSale}>
                     <Styled.TextButton>
                         {loadingButton
-                            ? 'ALTERANDO PROJETO ...'
-                            : 'ALTERAR PROJETO'}
+                            ? 'ALTERANDO VEÍCULO ...'
+                            : 'ALTERAR VEÍCULO'}
                     </Styled.TextButton>
-                </Styled.ButtonProjectSend>
-            </Styled.ScrollFormProject>
+                </Styled.ButtonCarSaleSend>
+            </Styled.ScrollFormCarSale>
         </Styled.Container>
     );
 };

@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Platform, Alert, BackHandler} from 'react-native';
+import React, {useState} from 'react';
+import {Platform, Alert} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -7,12 +7,11 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Styled from './style';
 import ImagesFake from '../../../../components/Skeleton/ImagesFake';
 import GalleryFake from '../../../../components/Skeleton/GalleryFake';
-import api, {URLImageThumb} from '../../../../services/api';
+import api from '../../../../services/api';
 
 export default () => {
     const navigation = useNavigation();
     const route = useRoute();
-    const urlImageThumb = URLImageThumb.URLImage;
 
     const [loadingCover, setLoadingCover] = useState(false);
     const [dataCoverTemp, setDataCoverTemp] = useState({});
@@ -25,43 +24,10 @@ export default () => {
     const [name, setName] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [futureProjects, setFutureProjects] = useState('');
+    const [phone, setPhone] = useState('');
+    const [price, setPrice] = useState('');
 
     const [loadingButton, setLoadingButton] = useState(false);
-
-    useEffect(() => {
-        let cancelEffect = true;
-
-        if (cancelEffect) {
-            BackHandler.addEventListener('hardwareBackPress', () => {
-                setDataCover('');
-                setGalleryList([]);
-                setName('');
-                setTitle('');
-                setDescription('');
-                setFutureProjects('');
-            });
-
-            setDataCover(route.params.data.cover);
-            setName(route.params.data.name);
-            setTitle(route.params.data.title);
-            setDescription(route.params.data.description);
-            setFutureProjects(route.params.data.futureprojects);
-            populateThumbImagesProject();
-        }
-
-        return () => (cancelEffect = false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigation, route]);
-
-    //função para preencher a url certa para as imagens
-    const populateThumbImagesProject = () => {
-        let list = [...galleryList];
-        for (let i = 0; i < route.params.data.photos.length; i++) {
-            list.push(`${urlImageThumb}${route.params.data.photos[i]}`);
-        }
-        setGalleryList(list);
-    };
 
     //################################# -- ADICIONAR A FOTO DA CAPA -- #######################
 
@@ -87,7 +53,7 @@ export default () => {
             setDataCoverTemp(data);
             setLoadingCover(true);
 
-            let result = await api.addPhotoProject(data);
+            let result = await api.addPhotoCarSale(data);
             if (result.error === '') {
                 setDataCoverTemp({});
                 setLoadingCover(false);
@@ -127,7 +93,7 @@ export default () => {
             setDataGalleryTemp(data);
             setGalleryLoading(true);
 
-            let result = await api.addPhotoProject(data);
+            let result = await api.addPhotoCarSale(data);
             if (result.error === '') {
                 let list = [...galleryList];
                 list.push(result.photo);
@@ -145,9 +111,9 @@ export default () => {
         }
     };
 
-    //################################# -- ADICIONANDO O PROJETO NO BANCO -- #######################
+    //######################## -- ADICIONANDO UM VEÍCULO A VENDA NO BANCO -- #######################
 
-    const handleSubmitEditFormProject = async () => {
+    const handleSubmitFormCarSale = async () => {
         if (
             dataCover !== '' &&
             name !== '' &&
@@ -155,16 +121,18 @@ export default () => {
             description !== ''
         ) {
             setLoadingButton(true);
-            const result = await api.editProject(
-                route.params.data.id,
+
+            const result = await api.addCarSale(
                 dataCover,
                 galleryList,
                 name,
                 title,
                 description,
-                futureProjects,
+                phone,
+                price,
             );
             setLoadingButton(false);
+
             if (result.error === '') {
                 setDataCover('');
                 setDataCoverTemp({});
@@ -173,12 +141,14 @@ export default () => {
                 setName('');
                 setTitle('');
                 setDescription('');
-                setFutureProjects('');
+                setPhone('');
+                setPrice('');
+
                 navigation.goBack();
             } else {
                 Alert.alert(
                     'Opss!',
-                    'Erro ao enviar projeto, tente novamente mais tarde.',
+                    'Erro ao enviar seu veículo, tente novamente mais tarde.',
                     // eslint-disable-next-line no-sparse-arrays
                     [{text: 'OK', onPress: () => console.log('OK Pressed')}, ,],
                 );
@@ -186,7 +156,7 @@ export default () => {
         } else {
             Alert.alert(
                 'Opss!',
-                'É obrigatório tem uma imagem de capa e preencher todos os campos!',
+                'É obrigatório ter uma imagem de capa e preencher todos os campos!',
                 // eslint-disable-next-line no-sparse-arrays
                 [{text: 'OK', onPress: () => console.log('OK Pressed')}, ,],
             );
@@ -197,18 +167,6 @@ export default () => {
 
     const handleBackView = () => {
         navigation.goBack();
-        setDataCover('');
-        setGalleryList([]);
-        setName('');
-        setTitle('');
-        setDescription('');
-        setFutureProjects('');
-    };
-
-    const handlePhotoSelectedRemove = url => {
-        let list = [...galleryList];
-        list = list.filter(urls => urls !== url);
-        setGalleryList(list);
     };
 
     return (
@@ -221,12 +179,12 @@ export default () => {
                 </Styled.BoxDrawer>
                 <Styled.BoxTextInformation>
                     <Styled.TextInformation>
-                        EDITE O PROJETO
+                        ADICIONE O VEÍCULO
                     </Styled.TextInformation>
                 </Styled.BoxTextInformation>
             </Styled.BoxIndicator>
 
-            <Styled.ScrollFormProject>
+            <Styled.ScrollFormCarSale>
                 <Styled.BoxPhotoCover>
                     <Styled.ButtonImg
                         onPress={() =>
@@ -278,23 +236,12 @@ export default () => {
 
                     <Styled.BoxScrollImages>
                         <Styled.ScrollImages horizontal={true}>
-                            {galleryList.length > 0 &&
-                                galleryList.map((url, index) => (
-                                    <Styled.GalleryThumbImagesEdit key={index}>
-                                        <Styled.Gallery source={{uri: url}} />
-
-                                        <Styled.ButtonRemovePhotoGallery
-                                            onPress={() =>
-                                                handlePhotoSelectedRemove(url)
-                                            }>
-                                            <Icon
-                                                name="minus"
-                                                size={20}
-                                                color="#FFF"
-                                            />
-                                        </Styled.ButtonRemovePhotoGallery>
-                                    </Styled.GalleryThumbImagesEdit>
-                                ))}
+                            {galleryList.map((url, index) => (
+                                <Styled.Gallery
+                                    key={index}
+                                    source={{uri: url}}
+                                />
+                            ))}
 
                             {galleryloading && dataGalleryTemp?.uri && (
                                 <>
@@ -321,18 +268,18 @@ export default () => {
                     </Styled.BoxInput>
 
                     <Styled.BoxInput>
-                        <Styled.LabelInput>Projeto</Styled.LabelInput>
+                        <Styled.LabelInput>Veículo</Styled.LabelInput>
                         <Styled.InputText
                             value={title}
                             onChangeText={e => setTitle(e)}
-                            placeholder="Digite um nome para o projeto"
+                            placeholder="Digite o nome do veículo"
                             placeholderTextColor="rgba(191, 135, 86, 0.50)"
                         />
                     </Styled.BoxInput>
 
                     <Styled.BoxInput>
                         <Styled.LabelInput>
-                            Descrição do Projeto
+                            Detalhes do veículo
                         </Styled.LabelInput>
                         <Styled.InputText
                             description
@@ -340,30 +287,40 @@ export default () => {
                             onChangeText={e => setDescription(e)}
                             multiline={true}
                             numberOfLines={5}
-                            placeholder="Digite os detalhes do projeto"
+                            placeholder="Digite os detalhes do veículo"
                             placeholderTextColor="rgba(191, 135, 86, 0.50)"
                         />
                     </Styled.BoxInput>
 
                     <Styled.BoxInput>
-                        <Styled.LabelInput>Upgrades Futuros</Styled.LabelInput>
+                        <Styled.LabelInput>Telefone</Styled.LabelInput>
                         <Styled.InputText
-                            value={futureProjects}
-                            onChangeText={e => setFutureProjects(e)}
-                            placeholder="Digite os futuros ítens para esse projeto"
+                            value={phone}
+                            onChangeText={e => setPhone(e)}
+                            placeholder="Digite um telefone para contato"
+                            placeholderTextColor="rgba(191, 135, 86, 0.50)"
+                        />
+                    </Styled.BoxInput>
+
+                    <Styled.BoxInput>
+                        <Styled.LabelInput>Valor</Styled.LabelInput>
+                        <Styled.InputText
+                            value={price}
+                            onChangeText={e => setPrice(e)}
+                            placeholder="Digite o valor "
                             placeholderTextColor="rgba(191, 135, 86, 0.50)"
                         />
                     </Styled.BoxInput>
                 </Styled.BoxForm>
 
-                <Styled.ButtonProjectSend onPress={handleSubmitEditFormProject}>
+                <Styled.ButtonCarSaleSend onPress={handleSubmitFormCarSale}>
                     <Styled.TextButton>
                         {loadingButton
-                            ? 'ALTERANDO PROJETO ...'
-                            : 'ALTERAR PROJETO'}
+                            ? 'SALVANDO VEÍCULO ...'
+                            : 'SALVAR VEÍCULO'}
                     </Styled.TextButton>
-                </Styled.ButtonProjectSend>
-            </Styled.ScrollFormProject>
+                </Styled.ButtonCarSaleSend>
+            </Styled.ScrollFormCarSale>
         </Styled.Container>
     );
 };
