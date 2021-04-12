@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "806852674899",
+    "project_id": "garangas-club",
+    "storage_bucket": "garangas-club.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:806852674899:android:ec0e4ec53dbf44bfb34da6",
+        "android_client_info": {
+          "package_name": "com.garangasclub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "806852674899-m4n5vh7pbtnvn7jgab7b827sg3phntjk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVswvEBB5-IBE16m0_R5xtKlW3yk2pm8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "806852674899-m4n5vh7pbtnvn7jgab7b827sg3phntjk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

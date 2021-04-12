@@ -9,25 +9,25 @@ import {
 
 import Styled from './style';
 import api from '../../services/api';
-import HistoryFake from '../../components/Skeleton/HistoryFake';
+import ProjectFake from '../../components/Skeleton/ProjectFake';
 
 export default () => {
     const navigation = useNavigation();
     const route = useRoute();
     const focused = useIsFocused();
 
-    const [loadingHistory, setLoadingHistory] = useState(false);
-    const [dataHistory, setDataHistoric] = useState({});
+    const [loadingPartner, setLoadingPartner] = useState(false);
+    const [dataPartner, setDataPartner] = useState([]);
 
     useEffect(() => {
-        setDataHistoric({});
+        setDataPartner({});
 
         BackHandler.addEventListener('hardwareBackPress', () => {
-            setDataHistoric({});
+            setDataPartner([]);
         });
 
         const CleanNavigator = navigation.addListener('focus', () => {
-            getDataHistoric();
+            getDataPartners();
         });
 
         return CleanNavigator;
@@ -37,19 +37,19 @@ export default () => {
         let cancelPromise = true;
 
         if (cancelPromise) {
-            setDataHistoric({});
+            setDataPartner([]);
         }
 
         return () => (cancelPromise = false);
     }, [focused]); // Efeito para pegar a saída da tela por qualquer botão do modal tabButtonNavigator
 
-    const getDataHistoric = async () => {
-        setDataHistoric({});
-        setLoadingHistory(true);
-        const result = await api.getHistoric();
-        setLoadingHistory(false);
+    const getDataPartners = async () => {
+        setDataPartner([]);
+        setLoadingPartner(true);
+        const result = await api.getPartner();
+        setLoadingPartner(false);
         if (result.error === '') {
-            setDataHistoric(result.data);
+            setDataPartner(result.data);
         } else {
             // eslint-disable-next-line no-alert
             alert(result.error);
@@ -71,6 +71,26 @@ export default () => {
                     <Styled.TextInformation>PARCEIROS</Styled.TextInformation>
                 </Styled.BoxTextInformation>
             </Styled.BoxIndicator>
+
+            <Styled.ContentPartner>
+                <Styled.ScrollPartner>
+                    {loadingPartner && (
+                        // eslint-disable-next-line react-native/no-inline-styles
+                        <Styled.BoxImagePartner style={{height: 'auto'}}>
+                            <ProjectFake />
+                        </Styled.BoxImagePartner>
+                    )}
+
+                    {!loadingPartner &&
+                        dataPartner.map((item, index) => (
+                            <Styled.BoxImagePartner key={index}>
+                                <Styled.ImagePartner
+                                    source={{uri: item.photos}}
+                                />
+                            </Styled.BoxImagePartner>
+                        ))}
+                </Styled.ScrollPartner>
+            </Styled.ContentPartner>
         </Styled.Container>
     );
 };

@@ -107,5 +107,26 @@ export default {
         text-align: justify;
     `,
 
-    Text: styled.Text``,
+    ContentPartner: styled.View`
+        flex: 1;
+        padding-top: 15px;
+        padding-bottom: 12px;
+        background-color: #d7d7d9;
+    `,
+
+    ScrollPartner: styled.ScrollView``,
+
+    BoxImagePartner: styled.View`
+        width: 94%;
+        margin-left: 3%;
+        height: 140px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+    `,
+
+    ImagePartner: styled.Image`
+        width: 100%;
+        height: 100%;
+    `,
 };

@@ -16,10 +16,12 @@ export default () => {
     const [loadingCover, setLoadingCover] = useState(false);
     const [dataCoverTemp, setDataCoverTemp] = useState({});
     const [dataCover, setDataCover] = useState('');
+    const [uniqueCoverTemp, setUniqueCoverTemp] = useState('');
 
     const [galleryloading, setGalleryLoading] = useState(false);
     const [dataGalleryTemp, setDataGalleryTemp] = useState({});
     const [galleryList, setGalleryList] = useState([]);
+    const [galleryListTemp, setGalleryListTemp] = useState([]);
 
     const [name, setName] = useState('');
     const [title, setTitle] = useState('');
@@ -57,6 +59,7 @@ export default () => {
             if (result.error === '') {
                 setDataCoverTemp({});
                 setLoadingCover(false);
+                setUniqueCoverTemp(data.uri);
                 setDataCover(result.photo);
             } else {
                 Alert.alert(
@@ -98,6 +101,11 @@ export default () => {
                 let list = [...galleryList];
                 list.push(result.photo);
                 setGalleryList(list);
+
+                let listTemp = [...galleryListTemp];
+                listTemp.push(data.uri);
+                setGalleryListTemp(listTemp);
+
                 setGalleryLoading(false);
                 setDataGalleryTemp({});
             } else {
@@ -135,9 +143,11 @@ export default () => {
 
             if (result.error === '') {
                 setDataCover('');
+                setUniqueCoverTemp('');
                 setDataCoverTemp({});
                 setDataGalleryTemp({});
                 setGalleryList([]);
+                setGalleryListTemp([]);
                 setName('');
                 setTitle('');
                 setDescription('');
@@ -213,30 +223,44 @@ export default () => {
                         )}
 
                         {!loadingCover && dataCover.length > 0 && (
-                            <Styled.ImageCover source={{uri: dataCover}} />
+                            <Styled.ImageCover
+                                source={{uri: uniqueCoverTemp}}
+                            />
                         )}
                     </Styled.BoxCover>
                 </Styled.BoxPhotoCover>
 
                 <Styled.BoxPhotoThumb>
-                    <Styled.ButtonImg
-                        onPress={() =>
-                            launchImageLibrary(
-                                {
-                                    maxWidth: 1280,
-                                },
-                                handleAddPhotosGallery,
-                            )
-                        }>
-                        <Icon name="plus" size={20} color="#8c4f2b" />
-                        <Styled.TextButtonImg>
-                            Adicione as Imagens
-                        </Styled.TextButtonImg>
-                    </Styled.ButtonImg>
+                    {galleryloading && (
+                        // eslint-disable-next-line react-native/no-inline-styles
+                        <Styled.ButtonImg style={{opacity: 0.5}}>
+                            <Icon name="plus" size={20} color="#8c4f2b" />
+                            <Styled.TextButtonImg>
+                                Adicione as Imagens
+                            </Styled.TextButtonImg>
+                        </Styled.ButtonImg>
+                    )}
+
+                    {!galleryloading && (
+                        <Styled.ButtonImg
+                            onPress={() =>
+                                launchImageLibrary(
+                                    {
+                                        maxWidth: 1280,
+                                    },
+                                    handleAddPhotosGallery,
+                                )
+                            }>
+                            <Icon name="plus" size={20} color="#8c4f2b" />
+                            <Styled.TextButtonImg>
+                                Adicione as Imagens
+                            </Styled.TextButtonImg>
+                        </Styled.ButtonImg>
+                    )}
 
                     <Styled.BoxScrollImages>
                         <Styled.ScrollImages horizontal={true}>
-                            {galleryList.map((url, index) => (
+                            {galleryListTemp.map((url, index) => (
                                 <Styled.Gallery
                                     key={index}
                                     source={{uri: url}}

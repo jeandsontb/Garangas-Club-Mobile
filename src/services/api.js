@@ -1,5 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const baseUrl = '';
+
+export const UrlApi = () => {
+  return '';
+  //url para acesso as imagens pela api laravel
+};
+
+export const URLImageThumb = {
+  URLImage: '',
+};
+
 const request = async (method, endpoint, params, token = null) => {
   method = method.toLowerCase();
   let fullUrl = `${baseUrl}${endpoint}`;
@@ -310,6 +321,10 @@ export default {
     let token = await AsyncStorage.getItem('token');
 
     let json = await request('delete', `/member/restrict/${id}`, {}, token);
+    return json;
+  },
+  getPartner: async () => {
+    let json = await request('get', '/partner', {});
     return json;
   },
 };
